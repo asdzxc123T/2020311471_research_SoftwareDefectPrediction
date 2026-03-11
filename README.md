@@ -1,7 +1,9 @@
 ## FP: 멀티모달 소프트웨어 결함 예측 연구 리포
 
-이 리포지토리는 제 졸업논문에서 제안하는 멀티모달 소프트웨어 결함 예측 파이프라인을 구현하고 재현하기 위한 코드와 설정을 담고 있습니다.  
-제안서의 Figure 1/2에 대응하는 **GitHub 커밋 마이닝 → BFC 탐지 → SZZ 라벨링(BIC) → 데이터셋 구성(Temporal split) → (CPG/GNN, 텍스트, 정적 메트릭) → 퓨전 모델 → 평가/통계/XAI/강건성** 흐름을 한 자리에서 재현할 수 있도록 설계했습니다.
+이 리포지토리는 제 졸업논문에서 제안하는 멀티모달 소프트웨어 결함 예측 파이프라인을 구현하고 재현하기 위한 코드와 설정을 담고 있습니다.
+
+실험 목적에 따라 저는 두 종류의 데이터셋을 분리해서 사용합니다. 첫 번째는 기존 연구와의 비교 가능성을 위해 **Defects4J 벤치마크**만 활용하고, 두 번째는 보다 현실적인 환경을 반영하기 위해 **GitHub 저장소를 대상으로 commit mining 후 SZZ 기반 결함 데이터셋**을 구축합니다. 두 데이터셋은 구조와 라벨링 방식이 다르므로 동일한 전처리 파이프라인이 아니라 **각각에 맞는 데이터 처리 절차**를 적용하도록 구성해 두었습니다.  
+제안서의 Figure 1/2에 대응하는 **커밋 마이닝 → BFC 탐지 → SZZ 라벨링(BIC) → 데이터셋 구성(Temporal split) → (CPG/GNN, 텍스트, 정적 메트릭) → 퓨전 모델 → 평가/통계/XAI/강건성** 흐름을 한 자리에서 재현할 수 있도록 설계했으며, 초기에는 단일 모달리티(GNN 기반, Transformer 기반) 모델을 먼저 구축한 뒤, 이후 단계에서 멀티모달 특징 결합 모델을 구현해 성능을 분석하는 단계적 실험 전략을 따릅니다.
 
 ## 제안서 다이어그램
 
@@ -53,21 +55,21 @@ J --> K[Defect Probability]
 
 ## 빠른 시작(Docker)
 
-이 섹션에서는 Docker를 사용해 제가 설계한 실험 환경을 빠르게 재현하는 방법을 설명합니다.
+Docker를 사용해 제 실험 환경을 재현하시려면 아래 순서대로 진행하시면 됩니다.
 
-1) Docker로 개발/실험 환경 실행
+1) 개발/실험용 컨테이너 실행
 
 ```bash
 docker compose -f docker/docker-compose.yml up -d --build
 ```
 
-2) 컨테이너 안에서 패키지 설치(Editable)
+2) 컨테이너 안에서 이 프로젝트를 editable 모드로 설치
 
 ```bash
 docker compose -f docker/docker-compose.yml exec trainer pip install -e .
 ```
 
-3) 샘플 파이프라인(로컬 임시 데이터로 end-to-end 1회 실행)
+3) 샘플 파이프라인(end-to-end 1회 실행, 로컬 임시 데이터 사용)
 
 ```bash
 docker compose -f docker/docker-compose.yml exec trainer python scripts/00_env_check.py
@@ -78,13 +80,13 @@ docker compose -f docker/docker-compose.yml exec trainer python scripts/50_evalu
 
 ## 라벨 신뢰도(Precision) 감사(audit)
 
-SZZ 기반 자동 라벨이 실제로 얼마나 신뢰할 수 있는지 확인하기 위해, 저는 무작위 샘플 감사 시트를 생성하여 사람이 직접 검토하는 절차를 포함했습니다.
+자동 라벨의 신뢰도를 확인하기 위해 무작위 샘플에 대한 감사 시트를 생성하고, 검토자가 `human_verified_is_bug_inducing`를 채운 뒤 다시 실행하면 precision을 계산해 두었습니다.
 
 ```bash
 python scripts/22_label_audit.py --config configs/exp/sample_end_to_end.yaml --n 200
 ```
 
-생성된 `reports/labeling/label_audit_sheet.csv`에서 `human_verified_is_bug_inducing`을 채운 뒤 스크립트를 다시 실행하면, 감사 결과를 기반으로 라벨 precision을 계산하여 `reports/labeling/label_precision_report.json`에 기록합니다.
+`reports/labeling/label_audit_sheet.csv`에서 해당 컬럼을 채우신 뒤 아래 스크립트를 다시 실행하시면, `reports/labeling/label_precision_report.json`에 precision이 기록됩니다.
 
 ## 다중 시드 반복 + 통계(예시)
 
@@ -119,9 +121,9 @@ python scripts/70_robustness.py --config configs/exp/sample_end_to_end.yaml --fl
 
 ## 문서
 
-데이터 표현과 분할 규약은 별도 문서로 정리하여, 다른 연구자가 제 코드를 읽지 않고도 실험 설정을 이해할 수 있도록 했습니다.
+데이터 단위·스키마와 분할 규약은 아래 문서에 정리해 두었습니다. 실험 설정을 코드 없이도 파악하실 수 있도록 구성했습니다.
 
-- `docs/dataset_schema.md`: 데이터 단위 및 스키마 규약
+- `docs/dataset_schema.md`: 예측 단위(함수), line-to-function 매핑, 스키마 필드
 - `docs/splitting_policy.md`: Temporal split 규약(누수 방지)
-- `docker/README.md`: Docker/Defects4J/Joern 실행 가이드
+- `docker/README.md`: Docker 환경 재현 방법, Joern/Defects4J 활용 시 유의사항
 
