@@ -7,10 +7,10 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from fp.config.loader import load_yaml
-from fp.data.io import read_table
-from fp.utils.paths import ensure_dirs, find_repo_root
-from fp.utils.seed import set_global_seed
+from sdp.config.loader import load_yaml
+from sdp.data.io import read_table
+from sdp.utils.paths import ensure_dirs, find_repo_root
+from sdp.utils.seed import set_global_seed
 
 
 def main() -> int:

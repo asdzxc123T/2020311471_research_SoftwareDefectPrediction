@@ -57,4 +57,3 @@ def train_baseline_model(df: pd.DataFrame, cfg: BaselineTrainConfig) -> Pipeline
 
 def save_model(model: Pipeline, path: str) -> None:
     dump(model, path)
-

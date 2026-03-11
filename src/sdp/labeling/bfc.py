@@ -17,4 +17,3 @@ def is_bug_fixing_message(message: str, patterns: list[str] | None = None) -> bo
     pats = patterns or _DEFAULT_PATTERNS
     m = message.lower()
     return any(re.search(p, m) for p in pats)
-

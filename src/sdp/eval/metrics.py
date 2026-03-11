@@ -88,4 +88,3 @@ def popt_like(df: pd.DataFrame, *, y_col: str, prob_col: str, effort_col: str) -
     y = np.concatenate([[0.0], cum_pos])
     area = float(np.trapezoid(y, x))
     return max(0.0, min(1.0, area))
-

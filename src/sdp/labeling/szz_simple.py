@@ -7,7 +7,7 @@ def label_bug_inducing_commits_simple(df_commits: pd.DataFrame) -> pd.DataFrame:
     """
     실행 가능한 최소 SZZ 대체 구현(뼈대용).
     - BFC(버그 수정 커밋) 직전 커밋을 BIC(버그 유발)로 표시한다.
-    - 실제 SZZ(라인 blame 기반) 고도화는 `src/fp/labeling/`에 확장한다.
+    - 실제 SZZ(라인 blame 기반) 고도화는 `src/sdp/labeling/`에 확장한다.
     """
     req = {"repo_name", "commit_hash", "commit_time", "is_bug_fixing_commit"}
     missing = req - set(df_commits.columns)
@@ -28,4 +28,3 @@ def label_bug_inducing_commits_simple(df_commits: pd.DataFrame) -> pd.DataFrame:
     out["label_source"] = out.get("label_source", "szz_simple")
     out.loc[out["label_source"].isna(), "label_source"] = "szz_simple"
     return out
-

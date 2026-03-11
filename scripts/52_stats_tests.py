@@ -6,8 +6,8 @@ from pathlib import Path
 
 import numpy as np
 
-from fp.eval.stats_tests import bootstrap_ci
-from fp.utils.paths import ensure_dirs, find_repo_root
+from sdp.eval.stats_tests import bootstrap_ci
+from sdp.utils.paths import ensure_dirs, find_repo_root
 
 
 def main() -> int:

@@ -5,8 +5,8 @@ import json
 from pathlib import Path
 from subprocess import run
 
-from fp.config.loader import load_yaml
-from fp.utils.paths import ensure_dirs, find_repo_root
+from sdp.config.loader import load_yaml
+from sdp.utils.paths import ensure_dirs, find_repo_root
 
 
 def main() -> int:

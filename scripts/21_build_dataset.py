@@ -5,11 +5,11 @@ from pathlib import Path
 
 import pandas as pd
 
-from fp.config.loader import load_yaml
-from fp.data.io import write_table
-from fp.data.sample_data import make_sample_dataset
-from fp.data.splits import TemporalSplitConfig, apply_temporal_split
-from fp.utils.paths import ProjectPaths, ensure_dirs, find_repo_root
+from sdp.config.loader import load_yaml
+from sdp.data.io import write_table
+from sdp.data.sample_data import make_sample_dataset
+from sdp.data.splits import TemporalSplitConfig, apply_temporal_split
+from sdp.utils.paths import ProjectPaths, ensure_dirs, find_repo_root
 
 
 def build_from_sample(cfg: dict) -> pd.DataFrame:

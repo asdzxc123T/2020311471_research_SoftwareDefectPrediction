@@ -7,8 +7,8 @@ from pathlib import Path
 import pandas as pd
 from pydriller import Repository
 
-from fp.data.io import write_table
-from fp.utils.paths import ensure_dirs, find_repo_root
+from sdp.data.io import write_table
+from sdp.utils.paths import ensure_dirs, find_repo_root
 
 
 def main() -> int:

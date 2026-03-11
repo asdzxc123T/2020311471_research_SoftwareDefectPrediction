@@ -3,9 +3,9 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from fp.data.io import read_table, write_table
-from fp.labeling.szz_simple import label_bug_inducing_commits_simple
-from fp.utils.paths import find_repo_root
+from sdp.data.io import read_table, write_table
+from sdp.labeling.szz_simple import label_bug_inducing_commits_simple
+from sdp.utils.paths import find_repo_root
 
 
 def main() -> int:

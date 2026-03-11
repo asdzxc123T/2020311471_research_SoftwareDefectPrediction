@@ -5,9 +5,9 @@ from pathlib import Path
 
 import pandas as pd
 
-from fp.data.io import read_table, write_table
-from fp.labeling.bfc import is_bug_fixing_message
-from fp.utils.paths import find_repo_root
+from sdp.data.io import read_table, write_table
+from sdp.labeling.bfc import is_bug_fixing_message
+from sdp.utils.paths import find_repo_root
 
 
 def main() -> int:

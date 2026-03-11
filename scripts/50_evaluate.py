@@ -8,10 +8,10 @@ import numpy as np
 import pandas as pd
 from joblib import load
 
-from fp.config.loader import load_yaml
-from fp.data.io import read_table
-from fp.eval.metrics import compute_classification_metrics, popt_like, recall_at_topk_loc
-from fp.utils.paths import ProjectPaths, ensure_dirs, find_repo_root
+from sdp.config.loader import load_yaml
+from sdp.data.io import read_table
+from sdp.eval.metrics import compute_classification_metrics, popt_like, recall_at_topk_loc
+from sdp.utils.paths import ProjectPaths, ensure_dirs, find_repo_root
 
 
 def _predict_proba(model, X: pd.DataFrame) -> np.ndarray:

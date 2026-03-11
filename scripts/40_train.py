@@ -5,11 +5,11 @@ from pathlib import Path
 
 import pandas as pd
 
-from fp.config.loader import load_yaml
-from fp.data.io import read_table
-from fp.models.baseline.train import BaselineTrainConfig, save_model, train_baseline_model
-from fp.utils.paths import ProjectPaths, ensure_dirs, find_repo_root
-from fp.utils.seed import set_global_seed
+from sdp.config.loader import load_yaml
+from sdp.data.io import read_table
+from sdp.models.baseline.train import BaselineTrainConfig, save_model, train_baseline_model
+from sdp.utils.paths import ProjectPaths, ensure_dirs, find_repo_root
+from sdp.utils.seed import set_global_seed
 
 
 def main() -> int:

@@ -1,4 +1,4 @@
-## FP: 멀티모달 소프트웨어 결함 예측 연구 리포
+## 멀티모달 소프트웨어 결함 예측 연구 리포
 
 이 리포지토리는 제 졸업논문에서 제안하는 멀티모달 소프트웨어 결함 예측 파이프라인을 구현하고 재현하기 위한 코드와 설정을 담고 있습니다.
 
@@ -6,7 +6,7 @@
 제안서의 Figure 1/2에 대응하는 **커밋 마이닝 → BFC 탐지 → SZZ 라벨링(BIC) → 데이터셋 구성(Temporal split) → (CPG/GNN, 텍스트, 정적 메트릭) → 퓨전 모델 → 평가/통계/XAI/강건성** 흐름을 한 자리에서 재현할 수 있도록 설계했으며, 초기에는 단일 모달리티(GNN 기반, Transformer 기반) 모델을 먼저 구축한 뒤, 이후 단계에서 멀티모달 특징 결합 모델을 구현해 성능을 분석하는 단계적 실험 전략을 따릅니다.
 
 ## 제안서 다이어그램
-
+### Overall research pipeline for multimodal software defect prediction
 ```mermaid
 flowchart TD
 
@@ -33,6 +33,7 @@ H --> I[Multimodal Neural Network]
 I --> J[Defect Prediction]
 ```
 
+### Architecture of the multimodal defect prediction model combining code semantics, structural graph features, and static metrics
 ```mermaid
 flowchart LR
 
@@ -127,3 +128,5 @@ python scripts/70_robustness.py --config configs/exp/sample_end_to_end.yaml --fl
 - `docs/splitting_policy.md`: Temporal split 규약(누수 방지)
 - `docker/README.md`: Docker 환경 재현 방법, Joern/Defects4J 활용 시 유의사항
 
+## 참고
+- 현재 구현 범위는 RF/LR baseline과 파이프라인·평가까지이며, CodeBERT·GNN·GNNExplainer는 추후 확장

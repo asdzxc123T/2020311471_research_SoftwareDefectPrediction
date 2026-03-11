@@ -9,9 +9,9 @@ import shap
 from joblib import load
 from sklearn.pipeline import Pipeline
 
-from fp.config.loader import load_yaml
-from fp.data.io import read_table
-from fp.utils.paths import ensure_dirs, find_repo_root
+from sdp.config.loader import load_yaml
+from sdp.data.io import read_table
+from sdp.utils.paths import ensure_dirs, find_repo_root
 
 
 def main() -> int:

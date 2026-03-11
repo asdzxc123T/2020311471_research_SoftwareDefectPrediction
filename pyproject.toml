@@ -3,13 +3,13 @@ requires = ["setuptools>=69", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "fp-defect-prediction"
+name = "sdp-defect-prediction"
 version = "0.1.0"
 description = "Multimodal software defect prediction research pipeline (CPG + text + static metrics)."
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }
-authors = [{ name = "FP Team" }]
+authors = [{ name = "Research" }]
 dependencies = [
   "numpy>=1.26",
   "pandas>=2.2",

@@ -57,4 +57,3 @@ def mcnemar_test(y_true: np.ndarray, pred_a: np.ndarray, pred_b: np.ndarray) -> 
     table = [[n11, n10], [n01, n00]]
     res = mcnemar(table, exact=False, correction=True)
     return float(res.pvalue)
-
