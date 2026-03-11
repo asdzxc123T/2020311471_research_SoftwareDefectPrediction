@@ -1,6 +1,7 @@
 ## Temporal split 규약
 
-본 연구는 데이터 누수(data leakage)를 방지하기 위해 **시간 순서를 엄격히 준수하는 Temporal split**을 기본 원칙으로 한다.
+이 문서에서는 제가 데이터 누수(data leakage)를 방지하기 위해 사용한 시간 기반 분할(Temporal split) 규약을 정리합니다.  
+본 연구에서는 **시간 순서를 엄격히 준수하는 Temporal split**을 데이터 분할의 기본 원칙으로 삼았습니다.
 
 ### 기준 필드
 
