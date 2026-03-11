@@ -1,0 +1,18 @@
+flowchart LR
+
+A[Code Diff / Source Code] --> B[CodeBERT Encoder]
+B --> C[Text Embedding]
+
+D[Code Property Graph] --> E[GNN Encoder]
+E --> F[Graph Embedding]
+
+G[Static Code Metrics<br>LOC, Complexity, Churn] --> H[Metric Vector]
+
+C --> I[Feature Concatenation]
+F --> I
+H --> I
+
+I --> J[MLP Classifier]
+
+J --> K[Defect Probability]
+

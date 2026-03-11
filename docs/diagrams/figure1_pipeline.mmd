@@ -1,0 +1,24 @@
+flowchart TD
+
+A[GitHub Repositories] --> B[Commit Mining<br>PyDriller]
+
+B --> C[Bug Fix Commit Detection]
+
+C --> D[SZZ Labeling<br>Bug-Inducing Commit Identification]
+
+D --> E[Dataset Construction]
+
+E --> F[Code Property Graph Generation<br>Joern]
+
+F --> G1[Graph Features<br>GNN]
+F --> G2[Code Features<br>CodeBERT]
+E --> G3[Static Code Metrics]
+
+G1 --> H[Feature Fusion]
+G2 --> H
+G3 --> H
+
+H --> I[Multimodal Neural Network]
+
+I --> J[Defect Prediction]
+

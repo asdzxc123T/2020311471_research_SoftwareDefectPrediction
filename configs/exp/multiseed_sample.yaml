@@ -1,0 +1,30 @@
+project:
+  seed: 42
+
+data:
+  source: sample
+  sample:
+    n_repos: 2
+    n_commits_per_repo: 80
+  output_path: data/processed/sample_dataset.parquet
+  temporal_split:
+    train_ratio: 0.7
+    val_ratio: 0.15
+    test_ratio: 0.15
+
+train:
+  task: baseline_rf
+  features:
+    numeric: [loc_added, loc_deleted, churn]
+    text: diff_text
+  label_col: is_bug_inducing
+  output_model_path: artifacts/models/multiseed_baseline.joblib
+
+eval:
+  model_path: artifacts/models/multiseed_baseline.joblib
+  dataset_path: data/processed/sample_dataset.parquet
+  label_col: is_bug_inducing
+  effort_col: churn
+  topk_loc: 0.2
+  output_metrics_path: reports/metrics/multiseed_baseline.json
+

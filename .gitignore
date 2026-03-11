@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyd
+*.so
+.Python
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Python packaging artifacts
+*.egg-info/
+
+# Virtual envs
+.venv/
+venv/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+Desktop.ini
+
+# Data & artifacts (not committed)
+data/
+artifacts/
+reports/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Logs
+*.log
+
