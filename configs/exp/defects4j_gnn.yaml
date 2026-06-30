@@ -1,0 +1,33 @@
+project:
+  seed: 42
+
+data:
+  source: parquet
+  defects4j_root: data/raw/defects4j/defects4j
+  projects: [Lang, Chart, Math, Time]
+  output_path: data/processed/defects4j_dataset.parquet
+  temporal_split:
+    train_ratio: 0.7
+    val_ratio: 0.15
+    test_ratio: 0.15
+  train_subset: 800
+
+train:
+  task: gnn_only
+  epochs: 3
+  batch_size: 16
+  lr: 0.0001
+  features:
+    numeric: [loc_added, loc_deleted, churn, cyclomatic_complexity, loc_current]
+    text: diff_text
+    code: code_text
+  label_col: is_bug_inducing
+  output_model_path: artifacts/models/defects4j_gnn.pt
+
+eval:
+  model_path: artifacts/models/defects4j_gnn.pt
+  dataset_path: data/processed/defects4j_dataset.parquet
+  label_col: is_bug_inducing
+  effort_col: churn
+  topk_loc: 0.2
+  output_metrics_path: reports/metrics/defects4j_gnn_metrics.json

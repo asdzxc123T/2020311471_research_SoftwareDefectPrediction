@@ -5,6 +5,7 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 import shap
 from joblib import load
 from sklearn.pipeline import Pipeline
@@ -27,13 +28,25 @@ def main() -> int:
     model_path = Path(eval_cfg.get("model_path", "artifacts/models/baseline.joblib"))
     label_col = str(eval_cfg.get("label_col", "is_bug_inducing"))
 
+    train_cfg = cfg.get("train", {}) or {}
+    features_cfg = train_cfg.get("features", {}) or {}
+    numeric_cols = list(features_cfg.get("numeric", ["loc_added", "loc_deleted", "churn", "cyclomatic_complexity"]))
+    text_col = features_cfg.get("text")
+
     df = read_table(root / ds_path)
     test_df = df[df["split"] == "test"].copy()
     if len(test_df) == 0:
         raise ValueError("No test rows found.")
 
     model = load(root / model_path)
-    X = test_df.drop(columns=[label_col], errors="ignore")
+    feature_cols = list(numeric_cols)
+    if text_col:
+        feature_cols.append(str(text_col))
+    X = test_df[feature_cols].copy()
+    for c in numeric_cols:
+        X[c] = pd.to_numeric(X[c], errors="coerce").fillna(0.0)
+    if text_col:
+        X[str(text_col)] = X[str(text_col)].fillna("").astype(str)
     if len(X) > args.max_rows:
         X = X.sample(n=args.max_rows, random_state=0)
 
@@ -48,7 +61,7 @@ def main() -> int:
             try:
                 feature_names = pre.get_feature_names_out()
             except Exception:
-                feature_names = None
+                feature_names = list(X.columns) if hasattr(X, "columns") else None
 
             # RandomForest 등 트리 모델은 TreeExplainer가 안정적
             explainer = shap.TreeExplainer(clf)

@@ -1,0 +1,27 @@
+project:
+  seed: 42
+
+data:
+  source: github_labeled
+  input_path: data/processed/github_labeled_merged.parquet
+  output_path: data/processed/github_dataset.parquet
+  temporal_split:
+    train_ratio: 0.7
+    val_ratio: 0.15
+    test_ratio: 0.15
+
+train:
+  task: baseline_rf
+  features:
+    numeric: [loc_added, loc_deleted, churn, cyclomatic_complexity]
+    text: null
+  label_col: is_bug_inducing
+  output_model_path: artifacts/models/ablation_github_static.joblib
+
+eval:
+  model_path: artifacts/models/ablation_github_static.joblib
+  dataset_path: data/processed/github_dataset.parquet
+  label_col: is_bug_inducing
+  effort_col: churn
+  topk_loc: 0.2
+  output_metrics_path: reports/metrics/ablation_github_static.json

@@ -1,0 +1,31 @@
+project:
+  seed: 42
+
+data:
+  source: parquet
+  defects4j_root: data/raw/defects4j/defects4j
+  projects: [Lang, Chart, Math, Time]
+  sample:
+    n_projects: 4
+    n_methods_per_project: 120
+  output_path: data/processed/defects4j_dataset.parquet
+  temporal_split:
+    train_ratio: 0.7
+    val_ratio: 0.15
+    test_ratio: 0.15
+
+train:
+  task: baseline_rf
+  features:
+    numeric: [loc_added, loc_deleted, churn, cyclomatic_complexity, loc_current]
+    text: null
+  label_col: is_bug_inducing
+  output_model_path: artifacts/models/defects4j_baseline.joblib
+
+eval:
+  model_path: artifacts/models/defects4j_baseline.joblib
+  dataset_path: data/processed/defects4j_dataset.parquet
+  label_col: is_bug_inducing
+  effort_col: churn
+  topk_loc: 0.2
+  output_metrics_path: reports/metrics/defects4j_metrics.json

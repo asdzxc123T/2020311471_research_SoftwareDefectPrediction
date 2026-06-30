@@ -22,7 +22,26 @@ class ClassificationMetrics:
     f1: float
 
 
-def compute_classification_metrics(y_true: np.ndarray, y_prob: np.ndarray, threshold: float = 0.5) -> ClassificationMetrics:
+def find_best_threshold(y_true: np.ndarray, y_prob: np.ndarray) -> float:
+    """Pick threshold that maximizes F1 on validation data."""
+    if len(y_true) == 0:
+        return 0.5
+    best_t = 0.5
+    best_f1 = -1.0
+    for t in np.linspace(0.01, 0.99, 99):
+        y_pred = (y_prob >= t).astype(int)
+        f1 = float(f1_score(y_true, y_pred, zero_division=0))
+        if f1 > best_f1:
+            best_f1 = f1
+            best_t = float(t)
+    return best_t
+
+
+def compute_classification_metrics(
+    y_true: np.ndarray,
+    y_prob: np.ndarray,
+    threshold: float = 0.5,
+) -> ClassificationMetrics:
     y_pred = (y_prob >= threshold).astype(int)
     auc = None
     ap = None

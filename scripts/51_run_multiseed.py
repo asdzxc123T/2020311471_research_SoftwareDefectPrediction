@@ -22,16 +22,19 @@ def main() -> int:
     out_dir = root / "reports" / "multiseed"
     ensure_dirs(out_dir)
 
+    eval_cfg = cfg.get("eval", {}) or {}
+    metrics_template = Path(str(eval_cfg.get("output_metrics_path", "reports/metrics/metrics.json")))
+
     results = []
     for seed in seeds:
-        # Override seed by setting env var consumed by configs if needed; here we just pass through CLI is not standardized.
-        # For reproducibility, we store per-seed metrics path by templating config externally (future extension).
         print(f"== Seed {seed} ==")
-        # Build dataset -> train -> evaluate
         run(["python", "scripts/21_build_dataset.py", "--config", args.config, "--seed", str(seed)], cwd=root, check=True)
         run(["python", "scripts/40_train.py", "--config", args.config, "--seed", str(seed)], cwd=root, check=True)
         run(["python", "scripts/50_evaluate.py", "--config", args.config], cwd=root, check=True)
-        results.append({"seed": seed, "status": "ok"})
+
+        metrics_path = root / metrics_template
+        metrics = json.loads(metrics_path.read_text(encoding="utf-8")) if metrics_path.exists() else {}
+        results.append({"seed": seed, "status": "ok", "metrics": metrics})
 
     summary_path = out_dir / "run_summary.json"
     summary_path.write_text(json.dumps({"seeds": seeds, "runs": results}, indent=2, ensure_ascii=False), encoding="utf-8")

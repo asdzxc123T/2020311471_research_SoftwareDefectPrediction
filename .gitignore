@@ -37,3 +37,5 @@ reports/
 # Logs
 *.log
 
+# md
+paper_outline.md

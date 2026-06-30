@@ -6,7 +6,7 @@ from pathlib import Path
 import pandas as pd
 
 from sdp.data.io import read_table, write_table
-from sdp.labeling.bfc import is_bug_fixing_message
+from sdp.labeling.bfc_enhanced import is_bug_fixing_message
 from sdp.utils.paths import find_repo_root
 
 

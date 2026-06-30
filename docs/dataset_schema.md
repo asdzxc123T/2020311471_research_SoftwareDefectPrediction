@@ -41,7 +41,7 @@ SZZ 계열 방법으로 BFC를 식별하고 git blame 역추적으로 BIC를 찾
 
 - `diff_text` (str|None): 변경 diff(모델 입력)
 - `code_text` (str|None): 원문 코드/컨텍스트(옵션)
-- `cpg_path` (str|None): Joern 산출물/그래프 경로(옵션)
+- `cpg_path` (str|None): Joern 산출물/그래프 경로(옵션). **현재 GNN은 Joern CPG 대신 언어별 AST proxy** (`src/sdp/graph/builder.py`: Python `ast`, Java `javalang`)를 사용하며, `GraphBuilder` 인터페이스로 Joern 연동 확장 가능.
 
 ### 분할(split)
 

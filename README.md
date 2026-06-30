@@ -129,4 +129,32 @@ python scripts/70_robustness.py --config configs/exp/sample_end_to_end.yaml --fl
 - `docker/README.md`: Docker 환경 재현 방법, Joern/Defects4J 활용 시 유의사항
 
 ## 참고
-- 현재 구현 범위는 RF/LR baseline과 파이프라인·평가까지이며, CodeBERT·GNN·GNNExplainer는 추후 확장
+- 현재 구현 범위: 데이터 파이프라인(Defects4J/GitHub+SZZ), RF/LR baseline, CodeBERT/GNN/멀티모달 퓨전, SHAP/GNNExplainer, label flipping 강건성 실험까지 포함
+- **그래프 모달리티**: Joern CPG 대신 언어별 AST proxy (`src/sdp/graph/builder.py`). Joern은 `scripts/30_build_cpg.sh` 및 optional Docker `joern` 서비스로 확장 가능
+- **Java 함수 매핑**: `javalang` + Git 경로 정규화 (`pip install -e ".[java]"`)
+
+## 추가 실험 스크립트
+
+```bash
+# Defects4J 데이터셋
+python scripts/14_build_defects4j_dataset.py --config configs/exp/defects4j_baseline.yaml
+
+# GitHub + SZZ 파이프라인 (로컬 clone 경로 필요)
+python scripts/13_run_github_pipeline.py --config configs/exp/github_szz.yaml --repo <local_repo_path>
+
+# 단일 모달리티 / 멀티모달
+python scripts/42_train_gnn.py --config configs/exp/gnn_only.yaml
+python scripts/41_train_text.py --config configs/exp/codebert_only.yaml
+python scripts/40_train.py --config configs/exp/multimodal_fusion.yaml
+
+# Ablation
+python scripts/43_run_ablation.py --config configs/exp/multimodal_fusion.yaml
+
+# GNNExplainer
+python scripts/61_gnn_xai.py --config configs/exp/gnn_only.yaml
+
+# Neural label flipping
+python scripts/71_robustness_neural.py --config configs/exp/multimodal_fusion.yaml
+```
+
+논문 작성 가이드: `docs/paper_outline.md`

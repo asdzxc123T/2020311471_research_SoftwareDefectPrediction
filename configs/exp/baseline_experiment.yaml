@@ -1,0 +1,37 @@
+project:
+  seed: 42
+
+data:
+  source: sample
+  sample:
+    n_repos: 3
+    n_commits_per_repo: 100
+  output_path: data/processed/baseline_dataset.parquet
+  temporal_split:
+    train_ratio: 0.7
+    val_ratio: 0.15
+    test_ratio: 0.15
+
+train:
+  task: baseline_rf
+  features:
+    numeric: [loc_added, loc_deleted, churn, cyclomatic_complexity]
+    text: diff_text
+  label_col: is_bug_inducing
+  output_model_path: artifacts/models/baseline_rf.joblib
+
+eval:
+  model_path: artifacts/models/baseline_rf.joblib
+  dataset_path: data/processed/baseline_dataset.parquet
+  label_col: is_bug_inducing
+  effort_col: churn
+  topk_loc: 0.2
+  output_metrics_path: reports/metrics/baseline_rf_metrics.json
+
+robustness:
+  flip_probs: [0.0, 0.1, 0.2, 0.3, 0.4]
+  output_path: reports/robustness/baseline_label_flipping.json
+
+multiseed:
+  seeds: [1, 2, 3, 4, 5]
+  output_dir: reports/multiseed/baseline_rf

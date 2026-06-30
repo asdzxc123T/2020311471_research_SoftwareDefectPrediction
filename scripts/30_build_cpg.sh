@@ -1,12 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-if ! command -v joern >/dev/null 2>&1; then
-  echo "joern not found in PATH."
-  echo "Start the optional joern container or install Joern and retry."
-  exit 1
-fi
-
 INPUT_DIR="${1:-}"
 OUT_DIR="${2:-data/processed/cpg}"
 
@@ -16,8 +10,14 @@ if [[ -z "${INPUT_DIR}" ]]; then
 fi
 
 mkdir -p "${OUT_DIR}"
-echo "This script is a minimal entrypoint for Joern-based CPG generation."
-echo "Input: ${INPUT_DIR}"
-echo "Output dir: ${OUT_DIR}"
-echo "Implement concrete joern-import / export commands per target language/repo."
-
+python -c "
+from pathlib import Path
+from sdp.cpg.joern_export import export_cpg_with_joern
+import sys
+input_dir = Path(sys.argv[1])
+output_dir = Path(sys.argv[2])
+records = export_cpg_with_joern(input_dir, output_dir)
+print(f'CPG export records: {len(records)}')
+for r in records[:5]:
+    print(r)
+" "${INPUT_DIR}" "${OUT_DIR}"

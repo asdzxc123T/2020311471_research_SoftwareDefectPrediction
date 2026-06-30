@@ -33,6 +33,14 @@ dev = [
   "ruff>=0.6",
   "pytest>=8.2",
 ]
+neural = [
+  "torch>=2.2",
+  "transformers>=4.41",
+  "tokenizers>=0.19",
+]
+java = [
+  "javalang>=0.13",
+]
 
 [tool.setuptools]
 package-dir = {"" = "src"}

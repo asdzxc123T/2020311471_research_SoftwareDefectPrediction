@@ -6,7 +6,7 @@ from pathlib import Path
 import pandas as pd
 
 from sdp.config.loader import load_yaml
-from sdp.data.io import write_table
+from sdp.data.io import read_table, write_table
 from sdp.data.sample_data import make_sample_dataset
 from sdp.data.splits import TemporalSplitConfig, apply_temporal_split
 from sdp.utils.paths import ProjectPaths, ensure_dirs, find_repo_root
@@ -39,7 +39,10 @@ def main() -> int:
         df = build_from_sample({"sample": data_cfg.get("sample", {}), "seed": seed})
     elif source == "parquet":
         in_path = Path(data_cfg["input_path"])
-        df = pd.read_parquet(root / in_path)
+        df = read_table(root / in_path)
+    elif source == "github_labeled":
+        in_path = Path(data_cfg["input_path"])
+        df = read_table(root / in_path)
     else:
         raise ValueError(f"Unsupported data.source: {source}")
 
